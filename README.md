@@ -1,4 +1,11 @@
+# Baixar dependencia
+
+Caso não venha instalar, instalar a dependencia de salvar pequenas configurações no cmd, na pasta do projeto:
+Utilize o CMD: flutter pub add shared_preferences
+
 # Aula 10 - Codigo base (SQLite)
+
+
 
 Lista de Compras da aula anterior, com os itens em MEMORIA (somem ao fechar o app), sem nenhum comentario.
 Siga o roteiro Roteiro_LiveCode_SQLite_Passo_a_Passo.docx e os slides SQLite_Flutter_Passo_a_Passo.pptx.

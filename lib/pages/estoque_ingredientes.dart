@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import '../database/banco_dados.dart';
 
@@ -10,13 +9,10 @@ class EstoqueIngredientesPage extends StatefulWidget {
       _EstoqueIngredientesPageState();
 }
 
-class _EstoqueIngredientesPageState
-    extends State<EstoqueIngredientesPage> {
-
+class _EstoqueIngredientesPageState extends State<EstoqueIngredientesPage> {
   final List<Map<String, dynamic>> _ingredientes = [];
 
-  final TextEditingController _nomeController =
-      TextEditingController();
+  final TextEditingController _nomeController = TextEditingController();
 
   bool _carregando = true;
   bool _adicionando = false;
@@ -127,36 +123,41 @@ class _EstoqueIngredientesPageState
 
   @override
   Widget build(BuildContext context) {
-    final corPrincipal = Theme.of(context).colorScheme.primary;
+    final tema = Theme.of(context);
+    final cores = tema.colorScheme;
+
+    final corPrincipal = cores.primary;
+    final corTexto = cores.onSurface;
+    final corSecundaria = cores.onSurfaceVariant;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Estoque de Ingredientes'),
+        title: const Text(
+          'Estoque de Ingredientes',
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+        ),
       ),
-
       body: Padding(
         padding: const EdgeInsets.all(16),
-
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             // CABEÇALHO
-            const Text(
+            Text(
               'Seus ingredientes',
               style: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF26352D),
+                color: corTexto,
               ),
             ),
 
             const SizedBox(height: 6),
 
-            const Text(
+            Text(
               'Cadastre os ingredientes que você já tem em casa.',
               style: TextStyle(
-                color: Colors.grey,
+                color: corSecundaria,
                 fontSize: 14,
               ),
             ),
@@ -167,25 +168,24 @@ class _EstoqueIngredientesPageState
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: cores.surface,
                 borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: cores.outlineVariant,
+                ),
               ),
-
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-
-                  const Text(
+                  Text(
                     'Adicionar ingrediente',
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF26352D),
+                      color: corTexto,
                     ),
                   ),
-
                   const SizedBox(height: 12),
-
                   TextField(
                     controller: _nomeController,
                     textCapitalization: TextCapitalization.sentences,
@@ -196,14 +196,11 @@ class _EstoqueIngredientesPageState
                     ),
                     onSubmitted: (_) => _adicionarIngrediente(),
                   ),
-
                   const SizedBox(height: 12),
-
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton.icon(
-                      onPressed:
-                          _adicionando ? null : _adicionarIngrediente,
+                      onPressed: _adicionando ? null : _adicionarIngrediente,
                       icon: const Icon(Icons.add),
                       label: Text(
                         _adicionando
@@ -222,28 +219,27 @@ class _EstoqueIngredientesPageState
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
+                Text(
                   'Ingredientes cadastrados',
                   style: TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF26352D),
+                    color: corTexto,
                   ),
                 ),
-
                 Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 12,
                     vertical: 6,
                   ),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFE8F3EC),
+                    color: cores.primaryContainer,
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Text(
                     '${_ingredientes.length} itens',
                     style: TextStyle(
-                      color: corPrincipal,
+                      color: cores.onPrimaryContainer,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -267,26 +263,22 @@ class _EstoqueIngredientesPageState
                               Icon(
                                 Icons.inventory_2_outlined,
                                 size: 64,
-                                color: Colors.grey.shade400,
+                                color: corSecundaria,
                               ),
-
                               const SizedBox(height: 12),
-
-                              const Text(
+                              Text(
                                 'Seu estoque está vazio',
                                 style: TextStyle(
                                   fontSize: 17,
                                   fontWeight: FontWeight.bold,
-                                  color: Color(0xFF26352D),
+                                  color: corTexto,
                                 ),
                               ),
-
                               const SizedBox(height: 6),
-
-                              const Text(
+                              Text(
                                 'Adicione ingredientes para começar.',
                                 style: TextStyle(
-                                  color: Colors.grey,
+                                  color: corSecundaria,
                                 ),
                               ),
                             ],
@@ -298,33 +290,41 @@ class _EstoqueIngredientesPageState
                             final ingrediente = _ingredientes[index];
 
                             return Card(
-                              color: Colors.white,
-                              margin: const EdgeInsets.only(bottom: 10),
+                              color: cores.surface,
+                              margin: const EdgeInsets.only(
+                                bottom: 10,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(14),
+                                side: BorderSide(
+                                  color: cores.outlineVariant,
+                                ),
+                              ),
                               child: ListTile(
                                 leading: Container(
                                   padding: const EdgeInsets.all(10),
                                   decoration: BoxDecoration(
-                                    color: const Color(0xFFE8F3EC),
+                                    color: cores.primaryContainer,
                                     borderRadius: BorderRadius.circular(12),
                                   ),
                                   child: Icon(
                                     Icons.eco_outlined,
-                                    color: corPrincipal,
+                                    color: cores.onPrimaryContainer,
                                   ),
                                 ),
-
                                 title: Text(
                                   ingrediente['nome'],
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontWeight: FontWeight.w600,
-                                    color: Color(0xFF26352D),
+                                    color: corTexto,
                                   ),
                                 ),
-
-                                subtitle: const Text(
+                                subtitle: Text(
                                   'Disponível no estoque',
+                                  style: TextStyle(
+                                    color: corSecundaria,
+                                  ),
                                 ),
-
                                 trailing: IconButton(
                                   icon: const Icon(
                                     Icons.delete_outline,

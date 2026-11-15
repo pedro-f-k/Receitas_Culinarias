@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 import '../database/banco_dados.dart';
@@ -13,15 +12,13 @@ class PesquisaReceitaPage extends StatefulWidget {
   });
 
   @override
-  State<PesquisaReceitaPage> createState() =>
-      _PesquisaReceitaPageState();
+  State<PesquisaReceitaPage> createState() => _PesquisaReceitaPageState();
 }
 
 class _PesquisaReceitaPageState extends State<PesquisaReceitaPage> {
   final List<Map<String, dynamic>> _receitas = [];
 
-  final TextEditingController _buscaController =
-      TextEditingController();
+  final TextEditingController _buscaController = TextEditingController();
 
   int _filtroTempo = 0;
   bool _somenteEstoque = false;
@@ -56,11 +53,17 @@ class _PesquisaReceitaPageState extends State<PesquisaReceitaPage> {
 
   @override
   Widget build(BuildContext context) {
-    final corPrincipal = Theme.of(context).colorScheme.primary;
+    final tema = Theme.of(context);
+    final cores = tema.colorScheme;
+    final corPrincipal = cores.primary;
+    final corTexto = cores.onSurface;
+    final corSecundaria = cores.onSurfaceVariant;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title: 
+        
+        const Text(
           'Minhas receitas',
           style: TextStyle(
             fontWeight: FontWeight.bold,
@@ -68,31 +71,28 @@ class _PesquisaReceitaPageState extends State<PesquisaReceitaPage> {
           ),
         ),
       ),
-
       body: Padding(
         padding: const EdgeInsets.all(16),
-
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             // CABEÇALHO
-            const Text(
+            Text(
               'O que vamos cozinhar hoje?',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF26352D),
+                color: corTexto,
               ),
             ),
 
             const SizedBox(height: 5),
 
-            const Text(
+            Text(
               'Encontre uma receita para preparar.',
               style: TextStyle(
                 fontSize: 14,
-                color: Colors.grey,
+                color: corSecundaria,
               ),
             ),
 
@@ -116,43 +116,39 @@ class _PesquisaReceitaPageState extends State<PesquisaReceitaPage> {
             Container(
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: cores.surface,
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(
-                  color: const Color(0xFFE0E7E1),
+                  color: cores.outlineVariant,
                 ),
               ),
-
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-
-                  const Row(
+                  Row(
                     children: [
                       Icon(
                         Icons.tune,
-                        color: Color(0xFF2E7D5B),
+                        color: corPrincipal,
                       ),
-                      SizedBox(width: 8),
+                      const SizedBox(width: 8),
                       Text(
                         'Filtros',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
+                          color: corTexto,
                         ),
                       ),
                     ],
                   ),
-
                   const SizedBox(height: 12),
-
                   DropdownButtonFormField<int>(
                     value: _filtroTempo,
                     decoration: const InputDecoration(
                       labelText: 'Tempo de preparo',
                       prefixIcon: Icon(Icons.access_time),
                     ),
-
                     items: const [
                       DropdownMenuItem(
                         value: 0,
@@ -171,7 +167,6 @@ class _PesquisaReceitaPageState extends State<PesquisaReceitaPage> {
                         child: Text('Mais de 60 minutos'),
                       ),
                     ],
-
                     onChanged: (valor) {
                       setState(() {
                         _filtroTempo = valor ?? 0;
@@ -180,22 +175,19 @@ class _PesquisaReceitaPageState extends State<PesquisaReceitaPage> {
                       _carregarReceitas();
                     },
                   ),
-
                   const SizedBox(height: 6),
-
                   CheckboxListTile(
                     contentPadding: EdgeInsets.zero,
                     activeColor: corPrincipal,
-                    controlAffinity:
-                        ListTileControlAffinity.leading,
-
-                    title: const Text(
+                    controlAffinity: ListTileControlAffinity.leading,
+                    title: Text(
                       'Somente receitas com pelo menos 3 ingredientes no estoque',
-                      style: TextStyle(fontSize: 13),
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: corTexto,
+                      ),
                     ),
-
                     value: _somenteEstoque,
-
                     onChanged: (valor) {
                       setState(() {
                         _somenteEstoque = valor ?? false;
@@ -214,15 +206,14 @@ class _PesquisaReceitaPageState extends State<PesquisaReceitaPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
+                Text(
                   'Receitas disponíveis',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF26352D),
+                    color: corTexto,
                   ),
                 ),
-
                 Text(
                   '${_receitas.length} receitas',
                   style: TextStyle(
@@ -246,26 +237,22 @@ class _PesquisaReceitaPageState extends State<PesquisaReceitaPage> {
                           Icon(
                             Icons.menu_book_outlined,
                             size: 65,
-                            color: Colors.grey.shade400,
+                            color: cores.onSurfaceVariant,
                           ),
-
                           const SizedBox(height: 12),
-
-                          const Text(
+                          Text(
                             'Nenhuma receita encontrada',
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
-                              color: Color(0xFF26352D),
+                              color: corTexto,
                             ),
                           ),
-
                           const SizedBox(height: 5),
-
-                          const Text(
+                          Text(
                             'Tente alterar sua pesquisa ou filtros.',
                             style: TextStyle(
-                              color: Colors.grey,
+                              color: corSecundaria,
                               fontSize: 13,
                             ),
                             textAlign: TextAlign.center,
@@ -273,10 +260,8 @@ class _PesquisaReceitaPageState extends State<PesquisaReceitaPage> {
                         ],
                       ),
                     )
-
                   : ListView.builder(
                       itemCount: _receitas.length,
-
                       itemBuilder: (context, index) {
                         final dados = _receitas[index];
 
@@ -288,35 +273,28 @@ class _PesquisaReceitaPageState extends State<PesquisaReceitaPage> {
                         final faltantes =
                             (dados['ingredientesFaltantes'] as int?) ?? 0;
 
-                        final total =
-                            (dados['totalIngredientes'] as int?) ?? 0;
+                        final total = (dados['totalIngredientes'] as int?) ?? 0;
 
                         return Card(
-                          color: Colors.white,
+                          color: cores.surface,
                           elevation: 1,
                           margin: const EdgeInsets.only(bottom: 12),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16),
-                            side: const BorderSide(
-                              color: Color(0xFFE8EEE9),
+                            side: BorderSide(
+                              color: cores.outlineVariant,
                             ),
                           ),
-
                           child: InkWell(
                             borderRadius: BorderRadius.circular(16),
-
                             onTap: () {
                               widget.onSelecionar(receita);
                             },
-
                             child: Padding(
                               padding: const EdgeInsets.all(16),
-
                               child: Column(
-                                crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-
                                   // NOME DA RECEITA
                                   Row(
                                     children: [
@@ -324,34 +302,30 @@ class _PesquisaReceitaPageState extends State<PesquisaReceitaPage> {
                                         width: 44,
                                         height: 44,
                                         decoration: BoxDecoration(
-                                          color: const Color(0xFFE8F3EC),
+                                          color: cores.primaryContainer,
                                           borderRadius:
                                               BorderRadius.circular(12),
                                         ),
-
-                                        child: const Icon(
+                                        child: Icon(
                                           Icons.restaurant,
-                                          color: Color(0xFF2E7D5B),
+                                          color: cores.onPrimaryContainer,
                                           size: 24,
                                         ),
                                       ),
-
                                       const SizedBox(width: 12),
-
                                       Expanded(
                                         child: Text(
                                           receita.nome,
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             fontSize: 16,
                                             fontWeight: FontWeight.bold,
-                                            color: Color(0xFF26352D),
+                                            color: corTexto,
                                           ),
                                         ),
                                       ),
-
                                       Icon(
                                         Icons.chevron_right,
-                                        color: Colors.grey.shade500,
+                                        color: corSecundaria,
                                       ),
                                     ],
                                   ),
@@ -364,33 +338,27 @@ class _PesquisaReceitaPageState extends State<PesquisaReceitaPage> {
                                       Icon(
                                         Icons.access_time,
                                         size: 17,
-                                        color: Colors.grey.shade600,
+                                        color: corSecundaria,
                                       ),
-
                                       const SizedBox(width: 5),
-
                                       Text(
                                         '${receita.tempoPreparo} minutos',
                                         style: TextStyle(
-                                          color: Colors.grey.shade700,
+                                          color: corSecundaria,
                                           fontSize: 13,
                                         ),
                                       ),
-
                                       const SizedBox(width: 20),
-
                                       Icon(
                                         Icons.people_outline,
                                         size: 17,
-                                        color: Colors.grey.shade600,
+                                        color: corSecundaria,
                                       ),
-
                                       const SizedBox(width: 5),
-
                                       Text(
                                         '${receita.porcoes} porções',
                                         style: TextStyle(
-                                          color: Colors.grey.shade700,
+                                          color: corSecundaria,
                                           fontSize: 13,
                                         ),
                                       ),
@@ -404,14 +372,14 @@ class _PesquisaReceitaPageState extends State<PesquisaReceitaPage> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      const Text(
+                                      Text(
                                         'Ingredientes no estoque',
                                         style: TextStyle(
                                           fontSize: 13,
                                           fontWeight: FontWeight.w600,
+                                          color: corTexto,
                                         ),
                                       ),
-
                                       Text(
                                         '$disponiveis de $total',
                                         style: TextStyle(
@@ -428,19 +396,13 @@ class _PesquisaReceitaPageState extends State<PesquisaReceitaPage> {
                                   // BARRA DE PROGRESSO
                                   ClipRRect(
                                     borderRadius: BorderRadius.circular(10),
-
                                     child: LinearProgressIndicator(
-                                      value: total > 0
-                                          ? disponiveis / total
-                                          : 0,
-
+                                      value:
+                                          total > 0 ? disponiveis / total : 0,
                                       minHeight: 8,
-
                                       backgroundColor:
-                                          const Color(0xFFE8EEE9),
-
-                                      valueColor:
-                                          AlwaysStoppedAnimation<Color>(
+                                          cores.surfaceContainerHighest,
+                                      valueColor: AlwaysStoppedAnimation<Color>(
                                         corPrincipal,
                                       ),
                                     ),
@@ -455,21 +417,16 @@ class _PesquisaReceitaPageState extends State<PesquisaReceitaPage> {
                                         faltantes > 0
                                             ? Icons.shopping_cart_outlined
                                             : Icons.check_circle_outline,
-
                                         size: 17,
-
                                         color: faltantes > 0
                                             ? Colors.deepOrange
                                             : corPrincipal,
                                       ),
-
                                       const SizedBox(width: 6),
-
                                       Text(
                                         faltantes > 0
                                             ? '$faltantes ingredientes faltantes'
                                             : 'Todos os ingredientes disponíveis',
-
                                         style: TextStyle(
                                           fontSize: 12,
                                           color: faltantes > 0

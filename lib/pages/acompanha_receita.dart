@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+
 import '../models/receita.dart';
 import '../database/banco_dados.dart';
 
@@ -12,13 +12,10 @@ class AcompanhaReceitaPage extends StatefulWidget {
   });
 
   @override
-  State<AcompanhaReceitaPage> createState() =>
-      _AcompanhaReceitaPageState();
+  State<AcompanhaReceitaPage> createState() => _AcompanhaReceitaPageState();
 }
 
-class _AcompanhaReceitaPageState
-    extends State<AcompanhaReceitaPage> {
-
+class _AcompanhaReceitaPageState extends State<AcompanhaReceitaPage> {
   List<Receita> _receitas = [];
 
   List<Map<String, dynamic>> _ingredientes = [];
@@ -50,9 +47,7 @@ class _AcompanhaReceitaPageState
 
   // CARREGAR INGREDIENTES
   Future<void> _carregarIngredientes() async {
-    if (_receitaId == null) {
-      return;
-    }
+    if (_receitaId == null) return;
 
     setState(() {
       _carregando = true;
@@ -91,10 +86,8 @@ class _AcompanhaReceitaPageState
   void didUpdateWidget(covariant AcompanhaReceitaPage oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    if (widget.receitaSelecionada?.id !=
-            oldWidget.receitaSelecionada?.id &&
+    if (widget.receitaSelecionada?.id != oldWidget.receitaSelecionada?.id &&
         widget.receitaSelecionada != null) {
-
       _receitaId = widget.receitaSelecionada!.id;
       _carregarIngredientes();
     }
@@ -102,15 +95,28 @@ class _AcompanhaReceitaPageState
 
   @override
   Widget build(BuildContext context) {
-    final corPrincipal = Theme.of(context).colorScheme.primary;
+    final tema = Theme.of(context);
+    final cores = tema.colorScheme;
 
-    final receitaAtual = _receitas.where(
-      (r) => r.id == _receitaId,
-    ).firstOrNull;
+    final corPrincipal = cores.primary;
+    final corTexto = cores.onSurface;
+    final corSecundaria = cores.onSurfaceVariant;
 
-    final comprados = _ingredientes.where(
-      (i) => i['comprado'] == 1,
-    ).length;
+    // LOCALIZAR RECEITA SELECIONADA
+    Receita? receitaAtual;
+
+    for (final receita in _receitas) {
+      if (receita.id == _receitaId) {
+        receitaAtual = receita;
+        break;
+      }
+    }
+
+    final comprados = _ingredientes
+        .where(
+          (i) => i['comprado'] == 1,
+        )
+        .length;
 
     final total = _ingredientes.length;
 
@@ -128,31 +134,28 @@ class _AcompanhaReceitaPageState
           ),
         ),
       ),
-
       body: Padding(
         padding: const EdgeInsets.all(16),
-
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             // CABEÇALHO
-            const Text(
+            Text(
               'Prepare sua receita',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF26352D),
+                color: corTexto,
               ),
             ),
 
             const SizedBox(height: 5),
 
-            const Text(
+            Text(
               'Marque os ingredientes conforme for comprando.',
               style: TextStyle(
                 fontSize: 14,
-                color: Colors.grey,
+                color: corSecundaria,
               ),
             ),
 
@@ -162,51 +165,42 @@ class _AcompanhaReceitaPageState
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: cores.surface,
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(
-                  color: const Color(0xFFE0E7E1),
+                  color: cores.outlineVariant,
                 ),
               ),
-
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-
-                  const Row(
+                  Row(
                     children: [
                       Icon(
                         Icons.restaurant_menu,
-                        color: Color(0xFF2E7D5B),
+                        color: corPrincipal,
                       ),
-
-                      SizedBox(width: 8),
-
+                      const SizedBox(width: 8),
                       Text(
                         'Receita selecionada',
                         style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF26352D),
+                          color: corTexto,
                         ),
                       ),
                     ],
                   ),
-
                   const SizedBox(height: 14),
-
                   DropdownButtonFormField<int>(
                     value: _receitas.any((r) => r.id == _receitaId)
                         ? _receitaId
                         : null,
-
                     isExpanded: true,
-
                     decoration: const InputDecoration(
                       hintText: 'Selecione uma receita',
                       prefixIcon: Icon(Icons.menu_book_outlined),
                     ),
-
                     items: _receitas.map((receita) {
                       return DropdownMenuItem<int>(
                         value: receita.id,
@@ -216,7 +210,6 @@ class _AcompanhaReceitaPageState
                         ),
                       );
                     }).toList(),
-
                     onChanged: (valor) async {
                       setState(() {
                         _receitaId = valor;
@@ -237,60 +230,50 @@ class _AcompanhaReceitaPageState
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(16),
-
                 decoration: BoxDecoration(
-                  color: const Color(0xFFE8F3EC),
+                  color: cores.primaryContainer,
                   borderRadius: BorderRadius.circular(16),
                 ),
-
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
+                        Text(
                           'Progresso da compra',
                           style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.bold,
-                            color: Color(0xFF26352D),
+                            color: cores.onPrimaryContainer,
                           ),
                         ),
-
                         Text(
                           '${(progresso * 100).round()}%',
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
-                            color: corPrincipal,
+                            color: cores.onPrimaryContainer,
                           ),
                         ),
                       ],
                     ),
-
                     const SizedBox(height: 12),
-
                     ClipRRect(
                       borderRadius: BorderRadius.circular(10),
-
                       child: LinearProgressIndicator(
                         value: progresso,
                         minHeight: 9,
-                        backgroundColor: Colors.white,
-                        valueColor:
-                            AlwaysStoppedAnimation<Color>(corPrincipal),
+                        backgroundColor: cores.surface,
+                        valueColor: AlwaysStoppedAnimation<Color>(corPrincipal),
                       ),
                     ),
-
                     const SizedBox(height: 10),
-
                     Text(
                       '$comprados de $total ingredientes comprados',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 13,
-                        color: Color(0xFF52665A),
+                        color: cores.onPrimaryContainer,
                       ),
                     ),
                   ],
@@ -301,12 +284,12 @@ class _AcompanhaReceitaPageState
 
             // TÍTULO DA LISTA
             if (_receitaId != null)
-              const Text(
+              Text(
                 'Lista de ingredientes',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF26352D),
+                  color: corTexto,
                 ),
               ),
 
@@ -318,7 +301,6 @@ class _AcompanhaReceitaPageState
                   ? const Center(
                       child: CircularProgressIndicator(),
                     )
-
                   : _receitaId == null
                       ? Center(
                           child: Column(
@@ -327,70 +309,64 @@ class _AcompanhaReceitaPageState
                               Icon(
                                 Icons.menu_book_outlined,
                                 size: 65,
-                                color: Colors.grey.shade400,
+                                color: corSecundaria,
                               ),
-
                               const SizedBox(height: 12),
-
-                              const Text(
+                              Text(
                                 'Selecione uma receita',
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
-                                  color: Color(0xFF26352D),
+                                  color: corTexto,
                                 ),
                               ),
-
                               const SizedBox(height: 5),
-
-                              const Text(
+                              Text(
                                 'Escolha uma receita para acompanhar seus ingredientes.',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  color: Colors.grey,
+                                  color: corSecundaria,
                                   fontSize: 13,
                                 ),
                               ),
                             ],
                           ),
                         )
-
                       : _ingredientes.isEmpty
-                          ? const Center(
+                          ? Center(
                               child: Text(
                                 'Nenhum ingrediente cadastrado.',
+                                style: TextStyle(
+                                  color: corSecundaria,
+                                ),
                               ),
                             )
-
                           : Column(
                               children: [
-
                                 // MENSAGEM DE CONCLUSÃO
                                 if (todosComprados)
                                   Container(
                                     width: double.infinity,
-                                    margin: const EdgeInsets.only(bottom: 12),
+                                    margin: const EdgeInsets.only(
+                                      bottom: 12,
+                                    ),
                                     padding: const EdgeInsets.all(14),
-
                                     decoration: BoxDecoration(
-                                      color: const Color(0xFFE8F3EC),
+                                      color: cores.primaryContainer,
                                       borderRadius: BorderRadius.circular(12),
                                     ),
-
-                                    child: const Row(
+                                    child: Row(
                                       children: [
                                         Icon(
                                           Icons.check_circle,
-                                          color: Color(0xFF2E7D5B),
+                                          color: cores.onPrimaryContainer,
                                         ),
-
-                                        SizedBox(width: 10),
-
+                                        const SizedBox(width: 10),
                                         Expanded(
                                           child: Text(
                                             'Tudo pronto! Você já possui todos os ingredientes.',
                                             style: TextStyle(
-                                              color: Color(0xFF2E7D5B),
+                                              color: cores.onPrimaryContainer,
                                               fontWeight: FontWeight.w600,
                                               fontSize: 13,
                                             ),
@@ -400,62 +376,51 @@ class _AcompanhaReceitaPageState
                                     ),
                                   ),
 
+                                // LISTA
                                 Expanded(
                                   child: ListView.builder(
                                     itemCount: _ingredientes.length,
-
                                     itemBuilder: (context, index) {
-                                      final ingrediente =
-                                          _ingredientes[index];
+                                      final ingrediente = _ingredientes[index];
 
                                       final comprado =
                                           ingrediente['comprado'] == 1;
 
                                       return Card(
                                         color: comprado
-                                            ? const Color(0xFFE8F3EC)
-                                            : Colors.white,
-
+                                            ? cores.primaryContainer
+                                            : cores.surface,
                                         elevation: 1,
-
                                         margin: const EdgeInsets.only(
                                           bottom: 10,
                                         ),
-
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(14),
                                           side: BorderSide(
-                                            color: comprado
-                                                ? const Color(0xFFB7D8C2)
-                                                : const Color(0xFFE0E7E1),
+                                            color: cores.outlineVariant,
                                           ),
                                         ),
-
                                         child: CheckboxListTile(
                                           activeColor: corPrincipal,
-
                                           contentPadding:
                                               const EdgeInsets.symmetric(
                                             horizontal: 14,
                                             vertical: 4,
                                           ),
-
                                           controlAffinity:
                                               ListTileControlAffinity.leading,
-
                                           title: Text(
                                             ingrediente['nome'],
                                             style: TextStyle(
                                               fontSize: 15,
                                               fontWeight: FontWeight.w500,
-                                              color: const Color(0xFF26352D),
+                                              color: corTexto,
                                               decoration: comprado
                                                   ? TextDecoration.lineThrough
                                                   : TextDecoration.none,
                                             ),
                                           ),
-
                                           subtitle: Text(
                                             comprado
                                                 ? 'Ingrediente comprado'
@@ -464,12 +429,10 @@ class _AcompanhaReceitaPageState
                                               fontSize: 12,
                                               color: comprado
                                                   ? corPrincipal
-                                                  : Colors.grey,
+                                                  : corSecundaria,
                                             ),
                                           ),
-
                                           value: comprado,
-
                                           onChanged: (valor) {
                                             _marcarComprado(
                                               ingrediente['id'] as int,

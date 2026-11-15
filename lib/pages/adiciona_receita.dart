@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import '../database/banco_dados.dart';
 
@@ -11,16 +10,14 @@ class AdicionaReceitaPage extends StatefulWidget {
   });
 
   @override
-  State<AdicionaReceitaPage> createState() =>
-      _AdicionaReceitaPageState();
+  State<AdicionaReceitaPage> createState() => _AdicionaReceitaPageState();
 }
 
 class _AdicionaReceitaPageState extends State<AdicionaReceitaPage> {
   final TextEditingController _nomeController = TextEditingController();
   final TextEditingController _tempoController = TextEditingController();
   final TextEditingController _porcoesController = TextEditingController();
-  final TextEditingController _ingredientesController =
-      TextEditingController();
+  final TextEditingController _ingredientesController = TextEditingController();
 
   bool _salvando = false;
 
@@ -29,9 +26,7 @@ class _AdicionaReceitaPageState extends State<AdicionaReceitaPage> {
     if (_salvando) return;
 
     final nome = _nomeController.text.trim();
-
     final tempo = int.tryParse(_tempoController.text) ?? 0;
-
     final porcoes = int.tryParse(_porcoesController.text) ?? 0;
 
     final ingredientes = _ingredientesController.text
@@ -41,10 +36,7 @@ class _AdicionaReceitaPageState extends State<AdicionaReceitaPage> {
         .toSet()
         .toList();
 
-    if (nome.isEmpty ||
-        tempo <= 0 ||
-        porcoes <= 0 ||
-        ingredientes.isEmpty) {
+    if (nome.isEmpty || tempo <= 0 || porcoes <= 0 || ingredientes.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Preencha todos os campos corretamente!'),
@@ -119,20 +111,20 @@ class _AdicionaReceitaPageState extends State<AdicionaReceitaPage> {
     TextInputType teclado = TextInputType.text,
     int linhas = 1,
   }) {
+    final cores = Theme.of(context).colorScheme;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           titulo,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w600,
-            color: Color(0xFF26352D),
+            color: cores.onSurface,
           ),
         ),
-
         const SizedBox(height: 8),
-
         TextField(
           controller: controller,
           keyboardType: teclado,
@@ -149,7 +141,12 @@ class _AdicionaReceitaPageState extends State<AdicionaReceitaPage> {
 
   @override
   Widget build(BuildContext context) {
-    final corPrincipal = Theme.of(context).colorScheme.primary;
+    final tema = Theme.of(context);
+    final cores = tema.colorScheme;
+
+    final corPrincipal = cores.primary;
+    final corTexto = cores.onSurface;
+    final corSecundaria = cores.onSurfaceVariant;
 
     return Scaffold(
       appBar: AppBar(
@@ -161,31 +158,28 @@ class _AdicionaReceitaPageState extends State<AdicionaReceitaPage> {
           ),
         ),
       ),
-
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
-
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             // CABEÇALHO
-            const Text(
+            Text(
               'Compartilhe uma receita!',
               style: TextStyle(
                 fontSize: 21,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF26352D),
+                color: corTexto,
               ),
             ),
 
             const SizedBox(height: 5),
 
-            const Text(
+            Text(
               'Cadastre os detalhes para encontrar e preparar sua receita depois.',
               style: TextStyle(
                 fontSize: 14,
-                color: Colors.grey,
+                color: corSecundaria,
               ),
             ),
 
@@ -195,50 +189,41 @@ class _AdicionaReceitaPageState extends State<AdicionaReceitaPage> {
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(16),
-
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: cores.surface,
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(
-                  color: const Color(0xFFE0E7E1),
+                  color: cores.outlineVariant,
                 ),
               ),
-
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-
-                  const Row(
+                  Row(
                     children: [
                       Icon(
                         Icons.restaurant_menu,
-                        color: Color(0xFF2E7D5B),
+                        color: corPrincipal,
                       ),
-
-                      SizedBox(width: 8),
-
+                      const SizedBox(width: 8),
                       Text(
                         'Informações da receita',
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF26352D),
+                          color: corTexto,
                         ),
                       ),
                     ],
                   ),
-
                   const SizedBox(height: 20),
-
                   _campo(
                     titulo: 'Nome da receita',
                     dica: 'Ex: Bolo de cenoura',
                     icone: Icons.restaurant,
                     controller: _nomeController,
                   ),
-
                   const SizedBox(height: 18),
-
                   _campo(
                     titulo: 'Tempo de preparo',
                     dica: 'Ex: 40',
@@ -246,9 +231,7 @@ class _AdicionaReceitaPageState extends State<AdicionaReceitaPage> {
                     controller: _tempoController,
                     teclado: TextInputType.number,
                   ),
-
                   const SizedBox(height: 18),
-
                   _campo(
                     titulo: 'Quantidade de porções',
                     dica: 'Ex: 4',
@@ -266,51 +249,42 @@ class _AdicionaReceitaPageState extends State<AdicionaReceitaPage> {
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(16),
-
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: cores.surface,
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(
-                  color: const Color(0xFFE0E7E1),
+                  color: cores.outlineVariant,
                 ),
               ),
-
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-
-                  const Row(
+                  Row(
                     children: [
                       Icon(
                         Icons.shopping_basket_outlined,
-                        color: Color(0xFF2E7D5B),
+                        color: corPrincipal,
                       ),
-
-                      SizedBox(width: 8),
-
+                      const SizedBox(width: 8),
                       Text(
                         'Ingredientes',
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF26352D),
+                          color: corTexto,
                         ),
                       ),
                     ],
                   ),
-
                   const SizedBox(height: 8),
-
-                  const Text(
+                  Text(
                     'Informe todos os ingredientes necessários para preparar a receita.',
                     style: TextStyle(
                       fontSize: 13,
-                      color: Colors.grey,
+                      color: corSecundaria,
                     ),
                   ),
-
                   const SizedBox(height: 16),
-
                   _campo(
                     titulo: 'Lista de ingredientes',
                     dica: 'Ex: farinha, ovos, leite, açúcar',
@@ -318,26 +292,22 @@ class _AdicionaReceitaPageState extends State<AdicionaReceitaPage> {
                     controller: _ingredientesController,
                     linhas: 4,
                   ),
-
                   const SizedBox(height: 10),
-
-                  const Row(
+                  Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Icon(
                         Icons.info_outline,
                         size: 16,
-                        color: Color(0xFF2E7D5B),
+                        color: corPrincipal,
                       ),
-
-                      SizedBox(width: 6),
-
+                      const SizedBox(width: 6),
                       Expanded(
                         child: Text(
                           'Separe cada ingrediente utilizando uma vírgula.',
                           style: TextStyle(
                             fontSize: 12,
-                            color: Colors.grey,
+                            color: corSecundaria,
                           ),
                         ),
                       ),
@@ -353,10 +323,8 @@ class _AdicionaReceitaPageState extends State<AdicionaReceitaPage> {
             SizedBox(
               width: double.infinity,
               height: 52,
-
               child: ElevatedButton.icon(
                 onPressed: _salvando ? null : _adicionarReceita,
-
                 icon: _salvando
                     ? const SizedBox(
                         width: 20,
@@ -367,11 +335,8 @@ class _AdicionaReceitaPageState extends State<AdicionaReceitaPage> {
                         ),
                       )
                     : const Icon(Icons.save_outlined),
-
                 label: Text(
-                  _salvando
-                      ? 'Salvando receita...'
-                      : 'Cadastrar receita',
+                  _salvando ? 'Salvando receita...' : 'Cadastrar receita',
                   style: const TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.bold,
